@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <style>
+        body {
+            background-color: azure;
+
+        }
+
+        canvas {
+            background-color: white;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container ">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="stand-tab" data-bs-toggle="tab" data-bs-target="#stand"
+                    type="button" role="tab" aria-controls="stand" aria-selected="true">Stand</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="run-tab" data-bs-toggle="tab" data-bs-target="#run" type="button"
+                    role="tab" aria-controls="run" aria-selected="false">Run</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="fall-tab" data-bs-toggle="tab" data-bs-target="#fall" type="button"
+                    role="tab" aria-controls="fall" aria-selected="false">Fall</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="fly-tab" data-bs-toggle="tab" data-bs-target="#fly" type="button"
+                    role="tab" aria-controls="fly" aria-selected="false">Fly</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="skillstand-tab" data-bs-toggle="tab" data-bs-target="#skillstand"
+                    type="button" role="tab" aria-controls="skillstand" aria-selected="false">Skillstan</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="inju-tab" data-bs-toggle="tab" data-bs-target="#inju" type="button"
+                    role="tab" aria-controls="inju" aria-selected="false">InJu</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="stand" data-typeId="1" role="tabpanel"
+                aria-labelledby="stand-tab">
+            </div>
+            <div class="tab-pane fade" id="run" role="tabpanel" data-typeId="5" aria-labelledby="run-tab">
+            </div>
+            <div class="tab-pane fade" id="fall" role="tabpanel" data-typeId="1" aria-labelledby="fall-tab"></div>
+            <div class="tab-pane fade" id="fly" data-typeId="1" role="tabpanel" aria-labelledby="fly-tab"></div>
+            <div class="tab-pane fade" id="skillstand" data-typeId="10" role="tabpanel"
+                aria-labelledby="skillstand-tab"> </div>
+            <div class="tab-pane fade" id="inju" data-typeId="1" role="tabpanel" aria-labelledby="inju-tab"></div>
+        </div>
+        <div class="introduction mt-5">
+            <img src="img/a.png" alt="">
+        </div>
+        <div class="import_img mt-5">
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="partHead">
+                    <i class="bi bi-file-earmark-image"></i>
+                </label>
+                <input type="file" class="form-control visually-hidden" id="partHead" accept="image/*" multiple>
+                <button class="btn btn-success" type="button" onclick="document.getElementById('partHead').click()">
+                    Chọn part đầu
+                </button>
+            </div>
+
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="partBody">
+                    <i class="bi bi-file-earmark-image"></i>
+                </label>
+                <input type="file" class="form-control visually-hidden" id="partBody" accept="image/*" multiple>
+                <button class="btn btn-success" type="button" onclick="document.getElementById('partBody').click()">
+                    Chọn part Body
+                </button>
+            </div>
+
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="partLeg">
+                    <i class="bi bi-file-earmark-image"></i>
+                </label>
+                <input type="file" class="form-control visually-hidden" id="partLeg" accept="image/*" multiple>
+                <button class="btn btn-success" type="button" onclick="document.getElementById('partLeg').click()">
+                    Chọn part Chân
+                </button>
+            </div>
+
+
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="data">
+                    <i class="bi bi-file-earmark-image"></i>
+                </label>
+                <button class="btn btn-success" type="button" onclick="return exporttojson()">
+                    export to data
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module" src="screenCanvas.js"></script>
+    <script>
+        function exporttojson() {
+            console.log("save");
+            var head = JSON.parse(localStorage.getItem("head"));
+            var body = JSON.parse(localStorage.getItem("body"));
+            var leg = JSON.parse(localStorage.getItem("leg"));
+            var datahead = head.map((item) => [parseInt(item.id), Math.round(item.x / 10), Math.round(item.y / 10)]);
+            var databody = body.map((item) => [parseInt(item.id), Math.round(item.x / 10), Math.round(item.y / 10)]);
+            var dataleg = leg.map((item) => [parseInt(item.id), Math.round(item.x / 10), Math.round(item.y / 10)]);
+            console.log("head : " + JSON.stringify(datahead));
+            console.log("body : " + JSON.stringify(databody));
+            console.log("leg : " + JSON.stringify(dataleg));
+        }
+
+    </script>
+</body>
+
+</html>
